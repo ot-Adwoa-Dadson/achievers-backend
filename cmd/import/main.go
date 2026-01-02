@@ -2,9 +2,10 @@ package main
 
 import (
 	//"context"
-	//"fmt"
 	"log"
 	"os"
+	"fmt"
+    "net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -20,6 +21,17 @@ import (
 )
 
 func main() {
+	port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080" // default for local development
+    }
+
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintln(w, "Fellowship backend running!")
+    })
+
+    log.Printf("Server starting on port %s...\n", port)
+    log.Fatal(http.ListenAndServe(":"+port, nil))
 	// LOAD .env FILE
 	if err := godotenv.Load(); err != nil {
 		log.Println("⚠️ No .env file found, using system environment variables")

@@ -11,6 +11,7 @@ func RegisterRoutes(router *gin.Engine, memberCol, userCol *mongo.Collection) {
 	memberHandler := handlers.MemberHandler{Collection: memberCol}
 	userHandler := handlers.UserHandler{Collection: userCol}
 	cellHandler := handlers.CellHandler{Collection: memberCol}
+	birthdayHandler := handlers.BirthdayHandler{Collection: memberCol}
 
 	api := router.Group("/api")
 	{
@@ -19,5 +20,6 @@ func RegisterRoutes(router *gin.Engine, memberCol, userCol *mongo.Collection) {
 
 		api.GET("/cells", cellHandler.GetSeniorCellsSummary)
 		api.GET("/cells/:seniorCell/members", cellHandler.GetMembersBySeniorCell)
+		api.GET("/birthdays/upcoming", birthdayHandler.GetUpcomingBirthdays)
 	}
 }

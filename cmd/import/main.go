@@ -7,7 +7,10 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 
+     "github.com/gin-contrib/cors"
+     "time"
 
 	//"github.com/gocarina/gocsv"
 	"fellowship-backend/internal/config"
@@ -17,6 +20,11 @@ import (
 )
 
 func main() {
+	// LOAD .env FILE
+	if err := godotenv.Load(); err != nil {
+		log.Println("⚠️ No .env file found, using system environment variables")
+	}
+
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
 		log.Fatal("MONGO_URI not set")
@@ -64,11 +72,22 @@ func main() {
 	notificationCol := db.Collection("notifications")
 
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // frontend origin
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge: 12 * time.Hour,
+	}))
 
 	routes.RegisterRoutes(router, memberCol, userCol)
 
 	// Start birthday cron
 	jobs.StartBirthdayCron(memberCol, notificationCol)
+
+	// 🟢 Allow CORS for frontend development
+
 
 	router.Run(":8080")
 

@@ -55,7 +55,7 @@ func main() {
 		AllowOrigins:     []string{
 			"http://localhost:5173",
 			"https://achievers-backend-eti6.onrender.com",
-			"https://achievers-pcf-admin.netlify.app/",
+			"https://achievers-pcf-admin.netlify.app",
 		}, // add production frontend
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},

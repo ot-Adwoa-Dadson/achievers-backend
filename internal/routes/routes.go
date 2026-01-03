@@ -16,6 +16,7 @@ func RegisterRoutes(router *gin.Engine, memberCol, userCol *mongo.Collection) {
 	api := router.Group("/api")
 	{
 		api.GET("/members", memberHandler.GetAllMembers)
+		api.POST("/members", memberHandler.CreateMember)
 		api.POST("/users", userHandler.CreateUser)
 
 		api.GET("/cells", cellHandler.GetSeniorCellsSummary)

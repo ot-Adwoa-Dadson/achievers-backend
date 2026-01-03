@@ -31,6 +31,7 @@ type Member struct {
 
 	Occupation      string             `bson:"occupation"`
 	CurrentEmployer string             `bson:"currentEmployer"`
+	ImageURL       string              `bson:"imageUrl,omitempty" json:"imageUrl,omitempty"` 
 
 	Guardian   Guardian       `bson:"guardian"`
 	Fellowship FellowshipInfo `bson:"fellowship"`
